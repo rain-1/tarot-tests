@@ -1,0 +1,1 @@
+((lambda () (print 777)))

@@ -1,0 +1,5 @@
+(define (f x) (lambda (y) x))
+(define (g x) (lambda (y) y))
+(print ((f "hello") "world"))
+(print ((g "hello") "world"))
+(newline)

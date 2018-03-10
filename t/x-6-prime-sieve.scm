@@ -1,0 +1,43 @@
+(define (iota-vec n)
+  (let ((v (make-vector n #f)))
+    (let loop ((i 0))
+      (if (= i n)
+	  v
+	  (begin (vector-set! v i i)
+		 (loop (+ i 1)))))))
+
+(define (sieve-out v m)
+  (let ((l (vector-length v)))
+    (let loop ((i (* 2 m)))
+      (if (< i l)
+	  (begin (vector-set! v i #f)
+		 (loop (+ i m)))
+	  v))))
+
+(define (find-next-number v i)
+  (cond ((>= i (vector-length v)) #f)
+	((vector-ref v i) i)
+	(else (find-next-number v (+ i 1)))))
+
+(define (extract-numbers v)
+  (let ((l (vector-length v)))
+    (let loop ((i 0))
+      (if (>= i l)
+	  '()
+	  (let ((c (vector-ref v i)))
+	    (if (number? c)
+		(cons c (loop (+ i 1)))
+		(loop (+ i 1))))))))
+
+(define (sieve n)
+  (let ((v (iota-vec n)))
+    (vector-set! v 0 #f)
+    (vector-set! v 1 #f)
+    (let loop ((p 2))
+      (when p
+	(sieve-out v p)
+	(loop (find-next-number v (+ p 1)))))
+    (extract-numbers v)))
+
+(display (sieve 10000))
+(newline)

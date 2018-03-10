@@ -1,0 +1,17 @@
+;(define char=? eq?)
+
+(define (whitespace? char)
+  (or (char=? char #\space)
+      (char=? char #\newline)
+;;      (char=? char #\return)
+      (char=? char #\tab)))
+
+(define (words p)
+  (let loop ((word '()))
+    (let ((char (read-char p)))
+      (cond ((eof-object? char) '())
+	    ((whitespace? char)
+	     (if (null? word)
+		 (loop '())
+		 (cons (list->string (reverse word)) (loop '()))))
+	    (else (loop (cons char word)))))))
